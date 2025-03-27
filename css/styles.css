@@ -1,0 +1,172 @@
+:root {
+    --primary-color: #3B82F6;
+    --secondary-color: #6366F1;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.badge {
+    background-color: rgba(59, 130, 246, 0.1);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.game-canvas {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.falling-word {
+    position: absolute;
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+    transition: top 0.1s linear;
+    user-select: none;
+    background: linear-gradient(45deg, #fff, rgba(99, 102, 241, 0.1));
+    padding: 0.5rem 1rem;
+    border-radius: 1rem;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes explode {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.7;
+    }
+    100% {
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+.explode-effect {
+    animation: explode 0.5s ease-out forwards;
+}
+
+#word-input:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+}
+
+#keyboard-section {
+    height: 40%;
+}
+
+#keyboard-container {
+    position: relative;
+}
+
+#keyboard-svg {
+    max-height: 100%;
+}
+
+.key-highlight {
+    position: absolute;
+    background-color: rgba(255, 255, 0, 0.5); /* Màu vàng nhạt */
+    border: 2px solid yellow;
+    box-shadow: 0 0 10px yellow; /* Hiệu ứng sáng */
+    transition: all 0.2s ease; /* Hiệu ứng mượt mà */
+}
+
+#left-hand,
+#right-hand {
+    width: 100px;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+.bottom-warning {
+    animation: bottom-warning-animation 0.3s alternate;
+}
+
+@keyframes bottom-warning-animation {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.5;
+    }
+}
+
+.highlighted {
+    fill: rgb(192, 68, 230); /* Màu sáng để nổi bật */
+    transition: fill 0.2s ease; /* Hiệu ứng mượt mà */
+}
+
+.speed-bar-glow {
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.8), 0 0 20px rgba(0, 255, 0, 0.6);
+}
+
+svg {
+    margin-top: -20px;
+}
+
+#back-btn {
+    z-index: 10; /* Đảm bảo nằm trên các phần tử khác */
+}
+
+.back-button-svg {
+    transition: transform 0.3s ease;
+}
+
+.back-button-svg:hover {
+    transform: translateX(-5px) scale(1.05);
+}
+
+.rounded-2xl {
+    border-radius: 0rem;
+}
+
+.test-char {
+    transition: opacity 0.3s ease, color 0.3s ease; /* Giữ transition mượt mà */
+}
+
+.test-char.completed {
+    opacity: 0.5; /* Tăng nhẹ opacity để dễ đọc hơn */
+    color: #666; /* Màu xám đậm hơn một chút */
+    text-decoration: line-through;
+}
+
+.test-char.error {
+    color: red;
+    opacity: 1; /* Nổi bật */
+    text-decoration: none;
+    font-weight: bold; /* Làm đậm ký tự sai để dễ nhận biết */
+    animation: shake 0.3s; /* Thêm hiệu ứng rung nhẹ */
+}
+
+@keyframes shake {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    50% { transform: translateX(2px); }
+    75% { transform: translateX(-2px); }
+    100% { transform: translateX(0); }
+}
+
+/* Bỏ .test-word nếu không dùng */
+
+.bottom-glow {
+    box-shadow: 0 10px 20px rgba(255, 0, 0, 0.8); /* Hiệu ứng sáng đỏ ở đáy */
+    transition: box-shadow 0.3s ease; /* Chuyển đổi mượt mà */
+}
+
+.bottom-line-glow {
+    border-bottom: 5px solid rgba(255, 0, 0, 0.8); /* Đường viền dưới sáng đỏ */
+    transition: border-bottom 0.3s ease; /* Chuyển đổi mượt mà */
+}
+
+#falling-words {
+    position: relative;
+    overflow: hidden;
+}

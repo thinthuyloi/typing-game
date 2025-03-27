@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeRush - Trò Chơi Gõ Chữ</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    
+</head>
+
+<body class="bg-gradient-to-r from-blue-100 to-purple-100 min-h-screen flex items-center justify-center">
+    <div id="game-container" class="bg-white shadow-2xl rounded-2xl p-8 w-full h-screen flex overflow-hidden">
+        <!-- Start Screen -->
+        <div id="start-screen" class="text-center w-full h-full flex items-center justify-center flex-col">
+            <h1 class="text-4xl font-bold mb-6 text-blue-600">TypeRush</h1>
+            <div class="space-y-4 w-1/2">
+                <div>
+                    <label class="block mb-2 text-gray-700">Chọn cấp độ:</label>
+                    <select id="level-select" class="w-full p-3 border rounded-lg">
+                        <!-- <option value="0">Làm Quen Bàn Phím</option> -->
+                        <option value="1" selected="selected">Cấp 1</option>
+                        <option value="2">Cấp 2</option>
+                        <option value="3">Cấp 3</option>
+                        <option value="4">Cấp 4</option>
+                        <option value="5">Cấp 5</option>
+                        <option value="6">Cấp 6</option>
+                        <option value="7">Cấp 7</option>
+                        <option value="8">Cấp 8</option>
+                        <option value="9">Chế độ Test Speed</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block mb-2 text-gray-700">Chọn thời gian:</label>
+                    <select id="time-select" class="w-full p-3 border rounded-lg">
+                        <option value="60">1 phút</option>
+                        <option value="120">2 phút</option>
+                        <option value="180">3 phút</option>
+                        <option value="300">5 phút</option>
+                    </select>
+                </div>
+                <button id="start-btn"
+                    class="w-full bg-blue-500 text-white py-3 rounded-lg hover:bg-blue-600 transition">
+                    Bắt Đầu
+                </button>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div id="game-area" class="hidden w-full h-full flex">
+            <!-- Biểu tượng BACK ở góc trên cùng bên trái -->
+            <div id="back-btn" class="absolute top-4 left-4 w-8 h-8 flex items-center justify-center text-gray-700 hover:text-gray-900 cursor-pointer transition-colors" title="Quay lại Menu">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60" width="60" height="60">
+                    <defs>
+                      <linearGradient id="softGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" style="stop-color:#F5F7FA;stop-opacity:1" />
+                        <stop offset="100%" style="stop-color:#E9ECEF;stop-opacity:1" />
+                      </linearGradient>
+                      
+                      <filter id="softShadow">
+                        <feDropShadow dx="0" dy="4" stdDeviation="5" flood-color="rgba(0,0,0,0.1)"/>
+                      </filter>
+                    </defs>
+                    
+                    <rect x="5" y="5" width="50" height="50" 
+                          rx="15" ry="15" 
+                          fill="url(#softGradient)"
+                          filter="url(#softShadow)"/>
+                    
+                    <path d="M35,20 L25,30 L35,40" 
+                          stroke="#4A4A4A" 
+                          stroke-width="3" 
+                          fill="none" 
+                          stroke-linecap="round"/>
+                  </svg>
+            </div>
+            <!-- Left Section -->
+            <div class="w-1/2 flex flex-col p-4">
+                <h2 class="text-2xl font-bold text-center text-blue-600 mb-4">Trò Chơi Gõ Phím</h2>
+                <div class="flex flex-row justify-between items-center mb-4 mt-6">
+                    <span class="badge">Cấp độ: <span id="level-display">1</span></span>
+                    <span class="badge">Sai: <span id="mistakes">0</span>/10</span>
+                    <span class="badge">Thời gian: <span id="timer">60</span>s</span>
+                </div>
+                <div id="keyboard-section" class="flex-grow flex items-center justify-center">
+                    <div id="keyboard-container" class="relative w-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 450" id="keyboard-svg"
+                            class="w-full h-auto" preserveAspectRatio="xMidYMid meet">
+                            <!-- Toàn bộ nội dung SVG như ban đầu -->
+                            <rect x="50" y="50" width="880" height="370" rx="15" ry="15" fill="#C0C0C0" stroke="#000"
+                                stroke-width="3" />
+                            <!-- Hàng phím chức năng -->
+                            <!-- Hàng phím chức năng -->
+                            <g id="function-row">
+                                <rect x="60" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0" stroke="#000" />
+                                <text x="85" y="85" font-family="Arial" font-size="15" text-anchor="middle">Esc</text>
+
+                                <rect x="120" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="145" y="85" font-family="Arial" font-size="15" text-anchor="middle">F1</text>
+
+                                <rect x="180" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="205" y="85" font-family="Arial" font-size="15" text-anchor="middle">F2</text>
+
+                                <rect x="240" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="265" y="85" font-family="Arial" font-size="15" text-anchor="middle">F3</text>
+
+                                <rect x="300" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="325" y="85" font-family="Arial" font-size="15" text-anchor="middle">F4</text>
+
+                                <rect x="360" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="385" y="85" font-family="Arial" font-size="15" text-anchor="middle">F5</text>
+
+                                <rect x="420" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="445" y="85" font-family="Arial" font-size="15" text-anchor="middle">F6</text>
+
+                                <rect x="480" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="505" y="85" font-family="Arial" font-size="15" text-anchor="middle">F7</text>
+
+                                <rect x="540" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="565" y="85" font-family="Arial" font-size="15" text-anchor="middle">F8</text>
+
+                                <rect x="600" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="625" y="85" font-family="Arial" font-size="15" text-anchor="middle">F9</text>
+
+                                <rect x="660" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="685" y="85" font-family="Arial" font-size="15" text-anchor="middle">F10</text>
+
+                                <rect x="720" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="745" y="85" font-family="Arial" font-size="15" text-anchor="middle">F11</text>
+
+                                <rect x="780" y="60" width="50" height="40" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="805" y="85" font-family="Arial" font-size="15" text-anchor="middle">F12</text>
+                            </g>
+
+                            <!-- Hàng phím chữ số -->
+                            <g id="number-row">
+                                <rect x="60" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="85" y="140" font-family="Arial" font-size="20" text-anchor="middle">~</text>
+
+                                <rect x="120" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="145" y="140" font-family="Arial" font-size="20" text-anchor="middle">1</text>
+
+                                <rect x="180" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="205" y="140" font-family="Arial" font-size="20" text-anchor="middle">2</text>
+
+                                <rect x="240" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="265" y="140" font-family="Arial" font-size="20" text-anchor="middle">3</text>
+
+                                <rect x="300" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="325" y="140" font-family="Arial" font-size="20" text-anchor="middle">4</text>
+
+                                <rect x="360" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="385" y="140" font-family="Arial" font-size="20" text-anchor="middle">5</text>
+
+                                <rect x="420" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="445" y="140" font-family="Arial" font-size="20" text-anchor="middle">6</text>
+
+                                <rect x="480" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="505" y="140" font-family="Arial" font-size="20" text-anchor="middle">7</text>
+
+                                <rect x="540" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="565" y="140" font-family="Arial" font-size="20" text-anchor="middle">8</text>
+
+                                <rect x="600" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="625" y="140" font-family="Arial" font-size="20" text-anchor="middle">9</text>
+
+                                <rect x="660" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="685" y="140" font-family="Arial" font-size="20" text-anchor="middle">0</text>
+
+                                <rect x="720" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="745" y="140" font-family="Arial" font-size="20" text-anchor="middle">-</text>
+
+                                <rect x="780" y="110" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="805" y="140" font-family="Arial" font-size="20" text-anchor="middle">=</text>
+
+                                <rect x="840" y="110" width="80" height="50" rx="5" ry="5" fill="#E0E0E0"
+                                    stroke="#000" />
+                                <text x="880" y="140" font-family="Arial" font-size="20" text-anchor="middle">⌫</text>
+                            </g>
+
+                            <!-- Hàng QWERTY -->
+                            <g id="qwerty-row">
+                                <rect x="60" y="170" width="80" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="90" y="200" font-family="Arial" font-size="20" text-anchor="middle">Tab</text>
+
+                                <rect x="150" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="175" y="200" font-family="Arial" font-size="20" text-anchor="middle">Q</text>
+
+                                <rect x="210" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="235" y="200" font-family="Arial" font-size="20" text-anchor="middle">W</text>
+
+                                <rect x="270" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="295" y="200" font-family="Arial" font-size="20" text-anchor="middle">E</text>
+
+                                <rect x="330" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="355" y="200" font-family="Arial" font-size="20" text-anchor="middle">R</text>
+
+                                <rect x="390" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="415" y="200" font-family="Arial" font-size="20" text-anchor="middle">T</text>
+
+                                <rect x="450" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="475" y="200" font-family="Arial" font-size="20" text-anchor="middle">Y</text>
+
+                                <rect x="510" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="535" y="200" font-family="Arial" font-size="20" text-anchor="middle">U</text>
+
+                                <rect x="570" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="595" y="200" font-family="Arial" font-size="20" text-anchor="middle">I</text>
+
+                                <rect x="630" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="655" y="200" font-family="Arial" font-size="20" text-anchor="middle">O</text>
+
+                                <rect x="690" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="715" y="200" font-family="Arial" font-size="20" text-anchor="middle">P</text>
+
+                                <rect x="750" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="775" y="200" font-family="Arial" font-size="20" text-anchor="middle">[</text>
+
+                                <rect x="810" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="835" y="200" font-family="Arial" font-size="20" text-anchor="middle">]</text>
+
+                                <rect x="870" y="170" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="895" y="200" font-family="Arial" font-size="20" text-anchor="middle">\</text>
+                            </g>
+
+                            <!-- Hàng ASDF -->
+                            <g id="asdf-row">
+                                <rect x="60" y="230" width="100" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="90" y="260" font-family="Arial" font-size="20" text-anchor="middle">Caps</text>
+
+                                <rect x="170" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="195" y="260" font-family="Arial" font-size="20" text-anchor="middle">A</text>
+
+                                <rect x="230" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="255" y="260" font-family="Arial" font-size="20" text-anchor="middle">S</text>
+
+                                <rect x="290" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="315" y="260" font-family="Arial" font-size="20" text-anchor="middle">D</text>
+
+                                <!-- Phím F -->
+                                <rect x="350" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFF00" stroke="#000"
+                                    data-key="f" />
+                                <text x="375" y="260" font-family="Arial" font-size="20" text-anchor="middle">F</text>
+
+                                <rect x="410" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="435" y="260" font-family="Arial" font-size="20" text-anchor="middle">G</text>
+
+                                <rect x="470" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="495" y="260" font-family="Arial" font-size="20" text-anchor="middle">H</text>
+
+                                <!-- Phím J -->
+                                <rect x="530" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFF00" stroke="#000"
+                                    data-key="j" />
+                                <text x="555" y="260" font-family="Arial" font-size="20" text-anchor="middle">J</text>
+
+                                <rect x="590" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="615" y="260" font-family="Arial" font-size="20" text-anchor="middle">K</text>
+
+                                <rect x="650" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="675" y="260" font-family="Arial" font-size="20" text-anchor="middle">L</text>
+
+                                <rect x="710" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="735" y="260" font-family="Arial" font-size="20" text-anchor="middle">;</text>
+
+                                <rect x="770" y="230" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="795" y="260" font-family="Arial" font-size="20" text-anchor="middle">'</text>
+
+                                <rect x="830" y="230" width="90" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="875" y="260" font-family="Arial" font-size="20"
+                                    text-anchor="middle">Enter</text>
+                            </g>
+
+                            <!-- Hàng Shift và Z -->
+                            <g id="shift-row">
+                                <rect x="60" y="290" width="130" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="105" y="320" font-family="Arial" font-size="20"
+                                    text-anchor="middle">Shift</text>
+
+                                <rect x="200" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="225" y="320" font-family="Arial" font-size="20" text-anchor="middle">Z</text>
+
+                                <rect x="260" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="285" y="320" font-family="Arial" font-size="20" text-anchor="middle">X</text>
+
+                                <rect x="320" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="345" y="320" font-family="Arial" font-size="20" text-anchor="middle">C</text>
+
+                                <rect x="380" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="405" y="320" font-family="Arial" font-size="20" text-anchor="middle">V</text>
+
+                                <rect x="440" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="465" y="320" font-family="Arial" font-size="20" text-anchor="middle">B</text>
+
+                                <rect x="500" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="525" y="320" font-family="Arial" font-size="20" text-anchor="middle">N</text>
+
+                                <rect x="560" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="585" y="320" font-family="Arial" font-size="20" text-anchor="middle">M</text>
+
+                                <rect x="620" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="645" y="320" font-family="Arial" font-size="20" text-anchor="middle">,</text>
+
+                                <rect x="680" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="705" y="320" font-family="Arial" font-size="20" text-anchor="middle">.</text>
+
+                                <rect x="740" y="290" width="50" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="765" y="320" font-family="Arial" font-size="20" text-anchor="middle">/</text>
+
+                                <rect x="800" y="290" width="120" height="50" rx="5" ry="5" fill="#FFFFFF"
+                                    stroke="#000" />
+                                <text x="880" y="320" font-family="Arial" font-size="20"
+                                    text-anchor="middle">Shift</text>
+                            </g>
+
+                            <!-- Thanh space -->
+                            <rect x="250" y="350" width="400" height="50" rx="5" ry="5" fill="#FFFFFF" stroke="#000" />
+                            <text x="450" y="380" font-family="Arial" font-size="15" text-anchor="middle">Space</text>
+                        </svg>
+                        <div id="key-highlights" class="absolute inset-0 pointer-events-none"></div>
+                        <div id="speed-bar-container" class="mt-4 w-full">
+                            <div class="relative w-full h-6 bg-gray-200 rounded-full overflow-hidden">
+                                <div id="speed-bar" class="absolute h-full bg-gradient-to-r from-green-400 to-blue-500 transition-all duration-500" style="width: 0%;"></div>
+                            </div>
+                            <p class="text-center text-sm mt-1 text-gray-700">Tốc độ: <span id="speed-display">0</span> từ/phút</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <input type="text" id="word-input"
+                        class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="Gõ từ ở đây" autocomplete="off">
+                </div>
+            </div>
+            <!-- Right Section -->
+            <div class="w-1/2 p-4">
+                <div id="falling-words" class="game-canvas border-2 border-gray-300 rounded-lg h-full relative"></div>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen"
+            class="hidden absolute inset-0 bg-black bg-opacity-70 flex items-center justify-center flex-col text-white">
+            <h2 id="game-over-title" class="text-3xl mb-4">Trò Chơi Kết Thúc</h2>
+            <p id="game-over-message" class="mb-6 text-xl"></p>
+            <div class="flex space-x-4">
+                <button id="restart-btn" class="bg-green-500 px-6 py-3 rounded-lg hover:bg-green-600">
+                    Chơi Lại
+                </button>
+                <button id="close-btn" class="bg-red-500 px-6 py-3 rounded-lg hover:bg-red-600">
+                    Đóng
+                </button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="js/data.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/game.js"></script>
+</body>
+
+</html>
