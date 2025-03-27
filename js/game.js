@@ -408,14 +408,15 @@ class TypingGame {
                             this.mistakes = this.currentMistakes.length;
                             GameUtils.playSound('error');
                         }
-                    } else {
-                        this.restartGame();
                     }
                 } else {
                     // Reset trạng thái cho các ký tự chưa gõ tới
                     charElement.classList.remove('completed', 'error');
                 }
             });
+            if (paragraphChars.length === typedChars.length) {
+                this.restartGame();
+            }
         
             this.mistakesDisplay.textContent = this.currentMistakes.length;
         
