@@ -484,6 +484,7 @@ class TypingGame {
     gameOver(message) {
         clearInterval(this.fallingWordsInterval);
         clearInterval(this.timer);
+        this.restartVariables();
         
         document.getElementById('game-over-title').textContent = 'Trò Chơi Kết Thúc';
         document.getElementById('game-over-message').textContent = message;
@@ -497,7 +498,7 @@ class TypingGame {
         closeBtn.textContent = 'Đóng';
         closeBtn.classList.remove('bg-blue-500', 'hover:bg-blue-600');
         closeBtn.classList.add('bg-red-500', 'hover:bg-red-600');
-        this.restartVariables();
+        
     }
 
     restartGame() {
