@@ -68,6 +68,13 @@ class TypingGame {
         this.inputElement.addEventListener('input', (e) => this.handleInput(e));
         this.inputElement.addEventListener('keydown', (e) => this.handleMistakes(e));
         this.backBtn.addEventListener('click', () => this.returnToMenu());
+        // Giữ focus khi nhấp bất kỳ đâu
+        document.addEventListener('click', (e) => {
+            if (this.gameArea.classList.contains('hidden')) return; // Bỏ qua nếu không ở game area
+            if (e.target !== this.inputElement) {
+                this.inputElement.focus();
+            }
+        });
     }
 
     startGame() {
@@ -79,6 +86,7 @@ class TypingGame {
         this.startTime = null; // Reset thời gian bắt đầu
         this.speedBar.style.width = '0%'; // Reset thanh speed
         this.speedDisplay.textContent = '0'; // Reset hiển thị tốc độ
+        this.inputElement.focus(); // Đặt focus ngay khi bắt đầu
         if (this.currentLevel === this.LEVELS.length) {
             this.startTestMode();
         } else {
