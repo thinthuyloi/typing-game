@@ -320,6 +320,7 @@ class TypingGame {
         closeBtn.addEventListener('click', () => {
             this.closeGame();
             levelCompleteScreen.remove(); // Xóa màn hình khi đóng
+            this.returnToMenu();
         });
     }
     
