@@ -12,7 +12,7 @@ class TypingGame {
             { speed: 3.5, wordList: words_8_or_more }
         ];
 
-        this.TEST_PARAGRAPH = "The quick brown fox jumps over the lazy dog near the riverbank. A strong wind blows through the trees, carrying leaves across the field. Birds sing loudly as the sun rises, painting the sky with colors of orange and pink. This is a longer test to measure your typing speed accurately, challenging you to maintain focus and precision over an extended period.";
+        this.TEST_PARAGRAPH = data;
         
         this.initializeElements();
         this.bindEvents();
